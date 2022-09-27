@@ -3,20 +3,12 @@
 #include <chrono> 
 #include <cstdlib>
 using namespace std;
-// Warrior class
-class WarriorClass{
+class HeroClass
+{
     public:
-    int WarriorHP;
-    int WarriorAttack;
-    float WarriorLuck;
-
-};
-
-//Monster class
-class MonsterClass{
-    public:
-    int monsterHP;
-    int monsterAttack;
+    int HP;
+    int Attack;
+    
 };
 
 // void which wirte line of stars 
@@ -25,36 +17,36 @@ void stars ()
 cout<< "****************************************************"<<endl;
 };
 
-int WarriorAttack( WarriorClass Warrior, MonsterClass Monster )
+int WarriorAttack( HeroClass Warrior, HeroClass Monster )
 {
     cout << "Warrior attack"<< endl;
-    Monster.monsterHP = Monster.monsterHP-Warrior.WarriorAttack;
-    cout << "Monster HP :" << Monster.monsterHP<<endl;
+    Monster.HP = Monster.HP-Warrior.Attack;
+    cout << "Monster HP :" << Monster.HP<<endl;
     stars();
-    return  Monster.monsterHP;
+    return  Monster.HP;
 
 
 }
 
-int MonsterAttack( WarriorClass Warrior, MonsterClass Monster)
+int MonsterAttack( HeroClass Warrior, HeroClass Monster)
 {
     cout << "Monster attack"<< endl;
-    Warrior.WarriorHP = Warrior.WarriorHP -Monster.monsterAttack;
-    cout << "Warrior HP :" << Warrior.WarriorHP<< endl;
+    Warrior.HP = Warrior.HP -Monster.Attack;
+    cout << "Warrior HP :" << Warrior.HP<< endl;
     stars();
-    return Warrior.WarriorHP;
+    return Warrior.HP;
 }
 
-  bool checkIfEndGame ( WarriorClass Warrior, MonsterClass Monster , bool endGame)
+  bool checkIfEndGame ( HeroClass Warrior, HeroClass Monster , bool endGame)
 {
-    if(Warrior.WarriorHP == 0 or Warrior.WarriorHP < 0 )
+    if(Warrior.HP == 0 or Warrior.HP < 0 )
         {
             endGame = true;
             cout << " Monster Win"<< endl;
             stars();
             return endGame; 
         }
-        else if (Monster.monsterHP == 0 or Monster.monsterHP <0 )
+        else if (Monster.HP == 0 or Monster.HP <0 )
         {
             endGame = true;
             cout << "Warrior Win"<< endl;
@@ -67,48 +59,60 @@ int MonsterAttack( WarriorClass Warrior, MonsterClass Monster)
         }
 }
 
+
 int main()
 {
     srand((unsigned) time(NULL)); 
     bool endGame = false;
 
     cout<< "The game will be here in some time \n\n" ;
-    // int random = 1 + (rand() % 101);
-    // cout << " rand value =";
-    // cout<< random <<endl;
     stars();
-    WarriorClass Warrior1;
-    Warrior1.WarriorHP = (80 + (rand()%21));
-    Warrior1.WarriorAttack = (5 + (rand()%10));
-    Warrior1.WarriorLuck = float(1 + float(rand()%3));
-    MonsterClass Monster1;
-    Monster1.monsterHP = (80 + (rand()%31));
-    Monster1.monsterAttack = (5+(rand()%15));
+    HeroClass Warrior1;
+    Warrior1.HP = (80 + (rand()%21));
+    Warrior1.Attack = (5 + (rand()%10));
+    //Warrior1.WarriorLuck = float(1 + float(rand()%3));
+    HeroClass Monster1;
+    Monster1.HP = (80 + (rand()%31));
+    Monster1.Attack = (5+(rand()%15));
     cout<< "Warrior parameters: "<<endl;
-    cout<< "HP : "<< Warrior1.WarriorHP << endl;
-    cout<< "Atak : "<< Warrior1.WarriorAttack << endl;
+    cout<< "HP : "<< Warrior1.HP << endl;
+    cout<< "Atak : "<< Warrior1.Attack << endl;
     // cout<< "Luck : "<< Warrior1.WarriorLuck << endl;
     stars();
     cout<< "Monster parameters: "<<endl;
-    cout<< "HP : "<< Monster1.monsterHP<< endl;
-    cout<< "Atak : "<< Monster1.monsterAttack << endl;
+    cout<< "HP : "<< Monster1.HP<< endl;
+    cout<< "Atak : "<< Monster1.Attack << endl;
     stars();
+    int howStart;
+    howStart = (1+ (rand()%101));
+    cout<< " how start : "<< howStart <<endl;
     
-    // Monster1.monsterHP = WarriorAttack(Warrior1,Monster1);
-    // cout<< Monster1.monsterHP<<endl;
-    // stars();
-    while (endGame ==  false)
+    if(howStart>50)
     {
-        /* code */
-        Monster1.monsterHP = WarriorAttack(Warrior1,Monster1);
-        this_thread::sleep_for (std::chrono::seconds(1));
-        endGame = checkIfEndGame(Warrior1,Monster1 ,endGame);
-        Warrior1.WarriorHP = MonsterAttack(Warrior1,Monster1);
-        this_thread::sleep_for (std::chrono::seconds(1));
-        endGame = checkIfEndGame(Warrior1,Monster1,endGame);
+     cout << "Warrior start"<< endl;
+     stars();
+        while (endGame ==  false)
+        {
         
+            Monster1.HP = WarriorAttack(Warrior1,Monster1);
+            this_thread::sleep_for (std::chrono::seconds(1));
+            endGame = checkIfEndGame(Warrior1,Monster1 ,endGame);
         
+            if ( endGame == true)
+            {
+                break;
+            }
+            else{
+                Warrior1.HP = MonsterAttack(Warrior1,Monster1);
+            }
+                this_thread::sleep_for (std::chrono::seconds(1));
+                endGame = checkIfEndGame(Warrior1,Monster1,endGame);    
+        }
     }
-    
+    else
+    {
+        cout<<"Monster start"<<endl;
+        stars();
+    }
     
 }
